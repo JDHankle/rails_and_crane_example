@@ -1,0 +1,23 @@
+containers:
+  app:
+    image: app
+    dockerfile: .
+    run:
+      volume: [".:/app"]
+      cmd: ['bundle', 'exec', 'rails', 's', '-b', '0.0.0.0']
+      link: ["mysql:db"]
+      publish: ["3000:3000"]
+      env:
+        EXAMPLE_DATABASE_USERNAME: root
+        EXAMPLE_DATABASE_HOST: db
+      detach: true
+      tty: true
+
+  mysql:
+    image: library/mysql:5.6.22
+    run:
+      publish: ["3306:3306"]
+      env:
+        MYSQL_ROOT_PASSWORD: root
+      detach: true
+      tty: true
